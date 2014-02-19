@@ -1,26 +1,32 @@
-package cast.receiver;
+package googlecast.receiver;
+
+import googlecast.receiver.CastMessageBus;
+import googlecast.receiver.CastMessageBus.MessageType;
+import googlecast.receiver.system.ApplicationData;
+import googlecast.receiver.system.Sender;
 
 /** Initializes the system manager so we can communicate with the platform.
   * This class is used to send/receive system messages/events.
   * It must only be instantiated just once (singleton).
   * Extends goog.events.EventTarget. Implements EventTarget.
   */
-extern class CastReseiverManager {
+@:native("cast.receiver.CastReceiverManager")
+extern class CastReceiverManager {
 	/** Initializes the system manager so we can communicate with the platform.
 	  * This class is used to send/receive system messages/events.
 	  * It must only be instantiated just once (singleton).
 	  */
 	public function new();
 	/** If provided, it processes the 'ready' event. */
-	public dynamic function onReady(Event):Void;
+	public dynamic function onReady(event:CastReceiverManagerEvent):Void;
 	/** If provided, it processes the 'senderconnected' event. */
-	public dynamic function onSenderConnected(Event):Void;
+	public dynamic function onSenderConnected(event:CastReceiverManagerEvent):Void;
 	/** If provided, it processes the 'senderdisconnected' event. */
-	public dynamic function onSenderDisconnected(Event):Void;
+	public dynamic function onSenderDisconnected(event:CastReceiverManagerEvent):Void;
 	/** If provided, it processes the 'systemvolumechanged' event. */
-	public dynamic function onSystemVolumeChanged(Event):Void;
+	public dynamic function onSystemVolumeChanged(event:CastReceiverManagerEvent):Void;
 	/** If provided, it processes the 'visibilitychanged' event. */
-	public dynamic function onVisibilityChanged(Event):Void;
+	public dynamic function onVisibilityChanged(event:CastReceiverManagerEvent):Void;
 	/** Initializes the system manager. */
 	public function start(?config:Config):Void;
 	/** Terminates the application. */
@@ -32,17 +38,19 @@ extern class CastReseiverManager {
 	/** Provides a list of the senders currently connected to the application. */
 	public function getSenders():Array<String>;
 	/** Provides a copy of the sender object by senderId. */
-	public function getSender(senderId:String):cast.receiver.system.Sender;
+	public function getSender(senderId:String):Sender;
 	/** Provides application information once the system is ready, otherwise it will be null. */
-	public function getApplicationData():cast.receiver.system.ApplicationData;
+	public function getApplicationData():ApplicationData;
 	/** Sets the application state. */
 	public function setApplicationState(statusText:String):Void;
 	/** Provides a channel for a specific namespace (for any sender). */
-	public function getCastMessageBus(namespace:String, ?messageType:cast.receiver.CastMessageBus.MessageType):cast.receiver.CastMessageBus;
+	public function getCastMessageBus(namespace:String, ?messageType:MessageType):CastMessageBus;
 
+	public static function getInstance():CastReceiverManager;
 }
 
 /** Application configuration parameters. */
+@:native("cast.receiver.CastReceiverManager.Config")
 extern class Config {
 	/** Maximum time in seconds before closing an idle sender connection.
 	  * Setting this value enables a heartbeat message to keep the connection alive.
@@ -59,17 +67,19 @@ extern class Config {
 }
 
 /** Event dispatched by cast.receiver.CastReceiverManager which contains system information. Extends goog.events.Event. */
-extern class Event
+@:native("cast.receiver.CastReceiverManager.Event")
+extern class CastReceiverManagerEvent
 {
 	/** Data associated with this event. */
 	public var data:Dynamic;
 	/** Event dispatched by cast.receiver.CastReceiverManager which contains system information. */
-	public function new(type:EventType, data:Dynamic);
+	public function new(type:CastReceiverManagerEventType, data:Dynamic);
 }
 
-@:fakeEnum(String)
 /** System events dispatched by cast.receiver.CastReceiverManager. */
-extern enum EventType {
+@:fakeEnum(String)
+@:native("cast.receiver.CastReceiverManager.EventType")
+extern enum CastReceiverManagerEventType {
 	/** Fired when the system is ready. */
 	READY;
 	/** Fired when the system is terminated. */

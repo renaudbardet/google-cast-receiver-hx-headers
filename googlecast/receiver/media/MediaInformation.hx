@@ -1,6 +1,7 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 /** Represents the media information. */
+@:native("cast.receiver.media.MediaInformation")
 extern class MediaInformation {
 	/** Typically the url of the media. */
 	public var contentId:String;

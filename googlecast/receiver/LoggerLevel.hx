@@ -1,5 +1,7 @@
-package cast.receiver;
+package googlecast.receiver;
+
 @:fakeEnum(Int)
+@:native("cast.receiver.LoggerLevel")
 extern enum LoggerLevel {
 	/** Debug logging (all messages). */
 	DEBUG;

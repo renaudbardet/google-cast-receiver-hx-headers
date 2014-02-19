@@ -1,4 +1,4 @@
-package cast.receiver;
+package googlecast.receiver;
 
 @:native("cast.receiver")
 extern class Receiver

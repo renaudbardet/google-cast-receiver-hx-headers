@@ -1,6 +1,7 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 @:fakeEnum(Int)
+@:native("cast.receiver.media.ErrorReason")
 extern enum ErrorReason {
 	/** Returned when the request ID is not unique (the receiver is processing a request with the same ID). */
 	DUPLICATE_REQUEST_ID;

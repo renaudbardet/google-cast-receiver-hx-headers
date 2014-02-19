@@ -1,7 +1,8 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 /** Represents media error message types. */
 @:fakeEnum(Int)
+@:native("cast.receiver.media.ErrorType")
 extern enum ErrorType
 {
 	/** Returned when the player state is invalid to fulfill the request. */

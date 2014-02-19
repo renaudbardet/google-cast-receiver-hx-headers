@@ -1,7 +1,8 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 /** The reason for the player to be in IDLE state. */
 @:fakeEnum(Int)
+@:native("cast.receiver.media.IdleReason")
 extern enum IdleReason{
 	/** A sender requested to stop playback using the STOP command. */
 	CANCELLED;

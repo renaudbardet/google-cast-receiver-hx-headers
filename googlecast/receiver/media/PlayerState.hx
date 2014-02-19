@@ -1,6 +1,7 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 @:fakeEnum(Int)
+@:native("cast.receiver.media.PlayerState")
 extern enum PlayerState
 {
 	/** The player is in BUFFERING state. */

@@ -1,5 +1,7 @@
-package cast.receiver.system;
+package googlecast.receiver.system;
+
 /** Represents the data of the launched application. */
+@:native("cast.receiver.system.ApplicationData")
 extern class ApplicationData {
 	/** The application Id. */
 	public var id:String;

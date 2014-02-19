@@ -1,6 +1,7 @@
-package cast.receiver.media;
+package googlecast.receiver.media;
 
 /** Represents the status of a media session. */
+@:native("cast.receiver.media.MediaStatus")
 extern class MediaStatus {
 	/** The current playback position. */
 	public var currentTime:Float;

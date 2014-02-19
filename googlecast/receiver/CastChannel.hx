@@ -1,4 +1,4 @@
-package cast.receiver;
+package googlecast.receiver;
 
 /** Handles cast messages for a specific sender and namespace
   * (it is a point to point communications channel).
@@ -9,11 +9,12 @@ package cast.receiver;
   * from the corresponding CastMessageBus calling the getCastChannel method.
   * Extends goog.events.EventTarget. Implements EventTarget.
   */
+@:native("cast.receiver.CastChannel")
 extern class CastChannel {
 	/** Event handler for {code cast.receiver.CastChannel} close event. */
-	public dynamic function onClose:Event->Void;
+	public dynamic function onClose(event:CastChannelEvent):Void;
 	/** Event handler for cast.receiver.CastMessageBus message event. */
-	public dynamic function onMessage:Event->Void;
+	public dynamic function onMessage(event:CastChannelEvent):Void;
 	/**  */
 	public function getNamespace():String;
 	/**  */
@@ -23,14 +24,16 @@ extern class CastChannel {
 }
 
 /** System events dispatched by cast.receiver.CastChannel. */
-extern class Event {
+@:native("cast.receiver.CastChannel.Event")
+extern class CastChannelEvent {
 	public var message:Dynamic;
 	public function new(type:String, message:Dynamic);
 }
 
 /**  */
 @:fakeEnum(Int)
-extern enum EventType {
+@:native("cast.receiver.CastChannel.EventType")
+extern enum CastChannelEventType {
 	/** Fired when there is a new message. */
 	CLOSE;
 	/** Fired when the sender associated with this cast channel has disconnected. */

@@ -1,5 +1,7 @@
-package cast.receiver;
+package googlecast.receiver;
 
+/** This class is used to send/receive media messages/events. */
+@:native("cast.receiver.MediaManager")
 extern class MediaManager {
 	/** Creates a media manager instance. This class is used to send/receive media messages/events.
 	 * @param mediaElement	HTMLMediaElement or cast.receiver.media.Player
@@ -189,7 +191,8 @@ extern class MediaManager {
 }
 
 /** Event dispatched by cast.receiver.MediaManager which contains system information. */
-extern class {
+@:native("cast.receiver.MediaManager.Event")
+extern class MediaManagerEvent{
 	/** Request data associated with this event. */
 	public var data:cast.receiver.MediaManager.RequestData;
 	/** The ID of the sender that triggered the event. */
@@ -198,6 +201,7 @@ extern class {
 }
 
 /** Load Request Information. Extends cast.receiver.MediaManager.RequestData. */
+@:native("cast.receiver.MediaManager.LoadInfo")
 extern class LoadInfo {
 	/** Request data associated with this load request. */
 	public var message:cast.receiver.MediaManager.LoadRequestData;
@@ -207,6 +211,7 @@ extern class LoadInfo {
 }
 
 /** Media event LOAD request data. Extends cast.receiver.MediaManager.RequestData. */
+@:native("cast.receiver.MediaManager.LoadRequestData")
 extern class LoadRequestData {
 	/** If the autoplay parameter is specified, the media player will begin playing the content when it is loaded. */
 	public var autoplay:Null<Bool>;
@@ -218,6 +223,7 @@ extern class LoadRequestData {
 }
 
 /** Media event request data. */
+@:native("cast.receiver.MediaManager.RequestData")
 extern class RequestData{
 	/** Application-specific data for this request. */
 	public var customData:Dynamic;
@@ -229,7 +235,7 @@ extern class RequestData{
 }
 
 /** Media event SEEK request data. Extends cast.receiver.MediaManager.RequestData.*/
-
+@:native("cast.receiver.MediaManager.SeekRequestData")
 extern class SeekRequestData{
 	/** Seconds since beginning of content.*/
 	public var currentTime:Float;
@@ -239,6 +245,7 @@ extern class SeekRequestData{
 }
 
 /** Media event SET_VOLUME request data. Extends cast.receiver.MediaManager.RequestData. */
+@:native("cast.receiver.MediaManager.VolumeRequestData")
 extern class VolumeRequestData {
 	/** The media stream volume. */
 	public var volume:cast.receiver.media.Volume;
@@ -246,7 +253,8 @@ extern class VolumeRequestData {
 }
 
 @:fakeEnum(Int)
-extern enum EventType {
+@:native("cast.receiver.MediaManager.EventType")
+extern enum MediaManagerEventType {
 	/** Fired when there is a load message. */
 	LOAD;
 	/** Fired when there is a stop message. */
