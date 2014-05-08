@@ -13,7 +13,7 @@ extern class MediaManager {
 	 *						Media commands supported by the application.
 	 *						LOAD, PLAY, STOP, GET_STATUS must always be supported. Optional.
 	 */
-	public function new(mediaElement:Dynamic, ?supportedCommands:cast.receiver.media.Command);
+	public function new(mediaElement:Dynamic, ?supportedCommands:googlecast.receiver.media.Command);
 
 	/** The application developer can override this method to customize the media status
 	 * that will be send to the senders (this method will be called before the media status is sent).
@@ -25,54 +25,54 @@ extern class MediaManager {
 	 * (developers should be aware that if the media status is a response to a sender status request
 	 * the sender will expect a response so this method should only return null it if the developer
 	 * is also overriding onGetStatus). */
-	dynamic public function customizedStatusCallback(cast.receiver.media.MediaStatus):cast.receiver.media.MediaStatus;
+	dynamic public function customizedStatusCallback(cb:googlecast.receiver.media.MediaStatus):googlecast.receiver.media.MediaStatus;
 	/** Called when the media ends. The default behavior is to call ResetMediaElement with idle reason FINISHED. */
 	dynamic public function onEnded():Void;
 	/** Called when there is an error not triggered by a LOAD request.
 	 * The default behavior is to call ResetMediaElement. */
-	dynamic public function onError(Object):Void;
+	dynamic public function onError(error:Dynamic):Void;
 	/** Processes the get status event. */
-	dynamic public function onGetStatus(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onGetStatus(event:googlecast.receiver.MediaManager.Event):Void;
 	/** If provided, it processes the load event. The default behavior is to set the src and autoplay properties
 	 * of the media element and call its load method.
 	 * If provided, the currentTime property will be modified when the 'loadedmetadata' event is fired
 	 * (in onMetadataLoaded) as it can only be set when the media element duration property has been set. */
-	dynamic public function onLoad(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onLoad(event:googlecast.receiver.MediaManager.Event):Void;
 	/** Called when load has had an error, it can be overridden to handle application specific logic.
 	 * The default behavior is to call resetMediaElement with idle reason ERROR and sendLoadError
 	 * with error type LOAD_FAILED. */
-	dynamic public function onLoadMetadataError(cast.receiver.MediaManager.LoadInfo):Void;
+	dynamic public function onLoadMetadataError(info:googlecast.receiver.MediaManager.LoadInfo):Void;
 	/** Called when load has completed, it can be overridden to handle application specific action.
 	 * The default behavior is to set the currentTime property of the media element
 	 * (if it was provided in the LOAD request), then call sendLoadComplete. */
-	dynamic public function onMetadataLoaded(cast.receiver.MediaManager.LoadInfo):Void;
+	dynamic public function onMetadataLoaded(info:googlecast.receiver.MediaManager.LoadInfo):Void;
 	/** Processes the pause event. The default behavior is to call the media element's pause method
 	 * and broadcast the status providing the incoming requestId. */
-	dynamic public function onPause(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onPause(event:googlecast.receiver.MediaManager.Event):Void;
 	/** Processes the play event. The default behavior is to call the media element's play method
 	 * and broadcast the status providing the incoming requestId. */
-	dynamic public function onPlay(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onPlay(event:googlecast.receiver.MediaManager.Event):Void;
 	/** Processes the seek event. The default behavior is to call the media element's play
 	 * or pause methods (only if required based on the current state and the resume state value of the request)
 	 * and broadcast the status providing the incoming requestId. */
-	dynamic public function onSeek(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onSeek(event:googlecast.receiver.MediaManager.Event):Void;
 	/** Processes the set volume event. The default behavior is to set volume and muted on the media element
 	 * as required and broadcast the status providing the incoming requestId. */
-	dynamic public function onSetVolume(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onSetVolume(event:googlecast.receiver.MediaManager.Event):Void;
 	/** Processes the stop event. The default behavior is to call resetMediaElement,
 	 * with idle reason CANCELLED, and broadcast the status providing the incoming requestId. */
-	dynamic public function onStop(cast.receiver.MediaManager.Event):Void;
+	dynamic public function onStop(event:googlecast.receiver.MediaManager.Event):Void;
 
 
 	/** Provides information about the media currently loaded.
-	 * @returns	cast.receiver.media.MediaInformation The media information.
-	 * @see	cast.receiver.media.MediaInformation
+	 * @returns	googlecast.receiver.media.MediaInformation The media information.
+	 * @see	googlecast.receiver.media.MediaInformation
 	 */
-	public function getMediaInformation():cast.receiver.media.MediaInformation;
+	public function getMediaInformation():googlecast.receiver.media.MediaInformation;
 
 	/** Sets information about the media currently loaded. This information will be sent to the senders
 	 * when they request media status.
-	 * @param	mediaInformation	cast.receiver.media.MediaInformation 
+	 * @param	mediaInformation	googlecast.receiver.media.MediaInformation 
 	 * 			The new media information. Use resetMediaElement to reset its value. Must not be null.
 	 * @param @optional	broadcast	Bool
 	 * 			Whether the senders should be notified about the change
@@ -81,15 +81,15 @@ extern class MediaManager {
 	 *			If the senders should be notified this parameter allows to set the application-specific
 	 *			custom data in the status message. Optional.
 	 * @throws Error	If broadcastStatusCustomData is provided but broadcast is false.
-	 * @see cast.receiver.media.MediaInformation
+	 * @see googlecast.receiver.media.MediaInformation
 	 */
-	public function setMediaInformation(mediaInformation:MediaInformation,
+	public function setMediaInformation(mediaInformation:googlecast.receiver.media.MediaInformation,
 		?broadcast:Null<Bool>,
-		?broadcastStatusCustomData:Dynamic):void;
+		?broadcastStatusCustomData:Dynamic):Void;
 
 	/** Sends a media status message to all senders (broadcast).
 	 * Applications can use it when they have a custom state change.
-	 * It will call cast.receiver.MediaManager.prototype.customizedStatusCallback so applications can customize
+	 * It will call googlecast.receiver.MediaManager.prototype.customizedStatusCallback so applications can customize
 	 * the status message.
 	 * @param includeMedia			Bool	Whether to include media information.
 	 * @param @optional requestId	Int		The ID of the request that triggered the status change. May be null. 
@@ -103,24 +103,24 @@ extern class MediaManager {
 	 * The idle reason will be sent in the next status message.
 	 * NOTE: Most applications do not need to set this value, it is only needed if they want to make the player
 	 * go to IDLE in special circumstances and the default idleReason does not reflect their intended behavior.
-	 * @param idleReason 	cast.receiver.media.IdleReason
+	 * @param idleReason 	googlecast.receiver.media.IdleReason
 	 *						The reason to be in the IDLE state.
 	 */
-	public function setIdleReason(idleReason:cast.receiver.media.IdleReason):Void;
+	public function setIdleReason(idleReason:googlecast.receiver.media.IdleReason):Void;
 
 	/** Sends an error to a specific sender.
 	 * @param senderId		String
 	 * 						The sender ID.
 	 * @param requestId		Int
 	 * 						The ID of the incoming request that caused this error.
-	 * @param type			cast.receiver.media.ErrorType
+	 * @param type			googlecast.receiver.media.ErrorType
 	 * 						The error type.
-	 * @param @optional reason	cast.receiver.media.ErrorReason 
+	 * @param @optional reason	googlecast.receiver.media.ErrorReason 
 	 * 						The error reason. May be null. Optional.
 	 * @param @optional customData	Dynamic
 	 * 						The error message application-specific custom data. Optional.
 	 */
-	public function sendError(senderId:String, requestId:Int, type:ErrorType, ?reason:ErrorReason, ?customData:Dynamic):Void;
+	public function sendError(senderId:String, requestId:Int, type:googlecast.receiver.media.ErrorType, ?reason:googlecast.receiver.media.ErrorReason, ?customData:Dynamic):Void;
 
 	/** Sends a media status message to a specific sender.
 	 * @param senderId	String
@@ -135,24 +135,24 @@ extern class MediaManager {
 	public function sendStatus(senderId:String, requestId:Int, includeMedia:Bool, ?customData:Dynamic):Void;
 
 	/** Associates a new media element or Player to the media manager.
-	 * @param mediaElement	HTMLMediaElement or cast.receiver.media.Player
+	 * @param mediaElement	HTMLMediaElement or googlecast.receiver.media.Player
 	 * 						The DOM media element (video/audio) or a player that implements the 
-	 *						cast.receiver.media.Player interface.
+	 *						googlecast.receiver.media.Player interface.
 	 */
 	public function setMediaElement(mediaElement:Dynamic):Void;
 
 	/** When the application overrides onLoad, it should use this method to trigger an error response to the sender.
 	 * This is typically due to application-specific verification issues.
-	 * @param @optional errorType	cast.receiver.media.ErrorType
+	 * @param @optional errorType	googlecast.receiver.media.ErrorType
 	 * 								The error type, by default is assumed to be 
-	 *								cast.receiver.media.ErrorType.LOAD_FAILED, but the application can send an
+	 *								googlecast.receiver.media.ErrorType.LOAD_FAILED, but the application can send an
 	 *								INVALID_REQUEST for example if there is customData that does not match some
 	 *								criteria.
 	 * @param @optional customData	Dynamic
 	 * 								The error message application-specific custom data. Optional.
-	 * @see cast.receiver.media.ErrorType
+	 * @see googlecast.receiver.media.ErrorType
 	 */
-	public function sendLoadError(?errorType:ErrorType, ?customData:Dynamic):Void;
+	public function sendLoadError(?errorType:googlecast.receiver.media.ErrorType, ?customData:Dynamic):Void;
 
 	/** Sends the new status after a LOAD message has been completed succesfully.
 	 * Note: Applications do not normally need to call this API.
@@ -169,7 +169,7 @@ extern class MediaManager {
 	 public function sendLoadComplete(?customData:Dynamic):Void;
 
 	/** Resets Media Element to IDLE state. After this call the mediaElement properties will change, paused will be true, currentTime will be zero and the src attribute will be empty. This only needs to be manually called if the developer wants to override the default behavior of onError, onStop or onEnded, for example.
-	 * @param @optional idleReason	cast.receiver.media.IdleReason 
+	 * @param @optional idleReason	googlecast.receiver.media.IdleReason 
 	 * 								The reason to be IDLE.
 	 * @param @optional broadcast	Bool
 	 * 								Whether the senders should be notified about the change
@@ -183,34 +183,34 @@ extern class MediaManager {
 	 *								application-specific custom data in the status message.
 	 * @throws Error				If broadcastStatusCustomData is provided but broadcast is false.
 	 */
-	public function resetMediaElement(?idleReason:IdleReason,
+	public function resetMediaElement(?idleReason:googlecast.receiver.media.IdleReason,
 		?broadcast:Bool,
 		?requestId:Int,
-		?broadcastStatusCustomData:Dynamic):Void
+		?broadcastStatusCustomData:Dynamic):Void;
 
 }
 
-/** Event dispatched by cast.receiver.MediaManager which contains system information. */
+/** Event dispatched by googlecast.receiver.MediaManager which contains system information. */
 @:native("cast.receiver.MediaManager.Event")
-extern class MediaManagerEvent{
+extern class Event{
 	/** Request data associated with this event. */
-	public var data:cast.receiver.MediaManager.RequestData;
+	public var data:googlecast.receiver.MediaManager.RequestData;
 	/** The ID of the sender that triggered the event. */
 	public var senderId:String;
 	public function new(type:String, data:RequestData, senderId:String);
 }
 
-/** Load Request Information. Extends cast.receiver.MediaManager.RequestData. */
+/** Load Request Information. Extends googlecast.receiver.MediaManager.RequestData. */
 @:native("cast.receiver.MediaManager.LoadInfo")
 extern class LoadInfo {
 	/** Request data associated with this load request. */
-	public var message:cast.receiver.MediaManager.LoadRequestData;
+	public var message:googlecast.receiver.MediaManager.LoadRequestData;
 	/** The ID of the sender that triggered the event. */
 	public var senderId:String;
 	public function new(message:LoadRequestData, senderId:String);
 }
 
-/** Media event LOAD request data. Extends cast.receiver.MediaManager.RequestData. */
+/** Media event LOAD request data. Extends googlecast.receiver.MediaManager.RequestData. */
 @:native("cast.receiver.MediaManager.LoadRequestData")
 extern class LoadRequestData {
 	/** If the autoplay parameter is specified, the media player will begin playing the content when it is loaded. */
@@ -218,7 +218,7 @@ extern class LoadRequestData {
 	/** Seconds since beginning of content. */
 	public var currentTime:Null<Float>;
 	/** If the autoplay parameter is specified, the media player will begin playing the content when it is loaded. */
-	public var media:cast.receiver.media.MediaInformation;
+	public var media:googlecast.receiver.media.MediaInformation;
 	public function new();
 }
 
@@ -234,21 +234,21 @@ extern class RequestData{
 	public function new();
 }
 
-/** Media event SEEK request data. Extends cast.receiver.MediaManager.RequestData.*/
+/** Media event SEEK request data. Extends googlecast.receiver.MediaManager.RequestData.*/
 @:native("cast.receiver.MediaManager.SeekRequestData")
 extern class SeekRequestData{
 	/** Seconds since beginning of content.*/
 	public var currentTime:Float;
 	/** The playback state after a SEEK request.*/
-	public var resumeState:cast.receiver.media.SeekResumeState;
+	public var resumeState:googlecast.receiver.media.SeekResumeState;
 	public function new();
 }
 
-/** Media event SET_VOLUME request data. Extends cast.receiver.MediaManager.RequestData. */
+/** Media event SET_VOLUME request data. Extends googlecast.receiver.MediaManager.RequestData. */
 @:native("cast.receiver.MediaManager.VolumeRequestData")
 extern class VolumeRequestData {
 	/** The media stream volume. */
-	public var volume:cast.receiver.media.Volume;
+	public var volume:googlecast.receiver.media.Volume;
 	public function new();
 }
 
