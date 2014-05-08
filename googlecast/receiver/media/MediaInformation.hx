@@ -12,8 +12,8 @@ extern class MediaInformation {
 	/** The media duration. */
 	public var duration:Float;
 	/** The media metadata. */
-	public var metadata:Dynamic
+	public var metadata:Dynamic;
 	/** The stream type. */
-	public var streamType:cast.receiver.media.StreamType;
+	public var streamType:googlecast.receiver.media.StreamType;
 	public function new();
 }
